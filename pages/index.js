@@ -1,6 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
+import Link from 'next/link'
+
+import BACKEND_URL from '../env-config'
 
 const Home = () => (
   <div>
@@ -8,8 +10,6 @@ const Home = () => (
       <title>Home</title>
       <link rel='icon' href='/static/favicon.ico' importance='low' />
     </Head>
-{/* 
-    <Nav /> */}
 
     <div className='hero'>
       <h1 className='title'>Welcome to the Door Game!</h1>
@@ -18,9 +18,11 @@ const Home = () => (
       </p>
 
       <div className='row'>
-        <a href='/game' className='card'>
-          <h3>Start Game</h3>
-        </a>
+        <Link href={'/game'} as={BACKEND_URL + '/game'}>
+          <a className='card'>
+            <h3>Start Game</h3>
+          </a>
+        </Link>
       </div>
     </div>
 
