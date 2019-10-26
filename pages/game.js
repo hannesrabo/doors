@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
-// import Nav from '../components/nav'
+import Router from 'next/router'
 import Door from '../components/door'
+
 import sendToSheets from '../util/gform'
+
+import BACKEND_URL from '../env-config'
 
 export default class Home extends Component {
 
@@ -17,6 +20,8 @@ export default class Home extends Component {
     // on values in it.
     this.state = {
       openDoor: -1,
+      numberOfClicks: 10,
+      points: 0,
     }
 
     // Everything starting with this (which refers to the component) is available
@@ -24,20 +29,55 @@ export default class Home extends Component {
     this.doors = [
       1, 2, 3
     ]
+
+    this.doorsClickedNumberOfTimes = this.doors.map(() => 0)
+
+    this.numberOfDoorsOpened = 0
+
   }
 
   // This is a normal function which can be called for example when you click on a door.
   doorClicked = (doorNumber) => {
-    console.log("Clicked: " + doorNumber)
+    if (doorNumber) {
+      var points = this.state.points
+      if (this.state.openDoor == doorNumber) {
+        points += 1
+      } else {
+        this.numberOfDoorsOpened += 1
+      }
 
-    if (doorNumber)
+      this.doorsClickedNumberOfTimes[doorNumber - 1] += 1
+
+      console.log("numberOfDoorsOpened: " + this.numberOfDoorsOpened)
+      console.log("doorsClicked: " + this.doorsClickedNumberOfTimes)
+
       this.setState({
         openDoor: doorNumber,
+        numberOfClicks: this.state.numberOfClicks - 1,
+        points: points,
       })
+    }
+  }
+
+  stopGame = () => {
+    console.log("Game ended")
+    sendToSheets({
+      door_openings: this.numberOfDoorsOpened,
+      clicked_1: this.doorsClickedNumberOfTimes[0],
+      clicked_2: this.doorsClickedNumberOfTimes[1],
+      clicked_3: this.doorsClickedNumberOfTimes[2],
+      points: this.state.points,
+    })
+    // Router.push(BACKEND_URL + '/index')
   }
 
   // This is the primary method of the component. It returns the page which is then displayed
   render() {
+
+    if (this.state.numberOfClicks < 1) {
+      this.stopGame()
+    }
+
     return (
       <div>
         {/* In the head you have mostly meta data about the site */}
@@ -51,6 +91,8 @@ export default class Home extends Component {
           <p className='description'>
             To get started, press the button below. Good luck!
           </p>
+
+          <p>{this.state.numberOfClicks}</p>
 
           <div className='row'>
             {
@@ -71,12 +113,18 @@ export default class Home extends Component {
           <button onClick={() => {
             // This is an example of how you could send data to a sheet.
             // Use this function elsewhere to send data when it is available
-            sendToSheets({
-              "test_1": "data &´+=",
-              "test_2": 1,
-              "test_3": "d ata@ä ",
-            })
+            // sendToSheets({
+            //   "test_1": "data &´+=",
+            //   "test_2": 1,
+            //   "test_3": "d ata@ä ",
+            // })
+
+            console.log(this.state.openDoor)
           }}>Send To Sheets</button>
+
+          <div>
+            <p>Points: {this.state.points}</p>
+          </div>
         </div>
 
         {/* This is styling for the document and can be ignored for the most part */}
