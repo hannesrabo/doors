@@ -6,6 +6,7 @@ import Door from '../components/door'
 import sendToSheets from '../util/gform'
 
 import BACKEND_URL from '../env-config'
+import normalDistribution from '../util/point'
 
 export default class Home extends Component {
 
@@ -22,6 +23,7 @@ export default class Home extends Component {
       openDoor: -1,
       numberOfClicks: 10,
       points: 0,
+      clicksLeft: [5, 5, 5,]
     }
 
     // Everything starting with this (which refers to the component) is available
@@ -39,7 +41,8 @@ export default class Home extends Component {
 
   // This is a normal function which can be called for example when you click on a door.
   doorClicked = (doorNumber) => {
-    if (doorNumber) {
+    if (doorNumber && this.state.clicksLeft[doorNumber - 1] > 0) {
+
       var points = this.state.points
       if (this.state.openDoor == doorNumber) {
         points += 1
@@ -47,6 +50,16 @@ export default class Home extends Component {
         this.numberOfDoorsOpened += 1
       }
 
+      var newClicksLeft = this.state.clicksLeft.map((count, index) => {
+        if (index != doorNumber - 1)
+          if (count <= 0)
+            return 0
+          else
+            return count - 1
+        else
+          return 6
+      })
+      console.log(newClicksLeft)
       this.doorsClickedNumberOfTimes[doorNumber - 1] += 1
 
       console.log("numberOfDoorsOpened: " + this.numberOfDoorsOpened)
@@ -56,6 +69,7 @@ export default class Home extends Component {
         openDoor: doorNumber,
         numberOfClicks: this.state.numberOfClicks - 1,
         points: points,
+        clicksLeft: newClicksLeft,
       })
     }
   }
@@ -71,12 +85,15 @@ export default class Home extends Component {
         clicked_3: this.doorsClickedNumberOfTimes[2],
         points: this.state.points,
       })
-      Router.push(BACKEND_URL + '/nextlevel')
+      Router.push(BACKEND_URL + '/end')
     }
   }
 
   // This is the primary method of the component. It returns the page which is then displayed
   render() {
+
+    // for (var i = 0; i < 100; i++)
+    //   console.log(normalDistribution(1.0, 0.5))
 
     if (this.state.numberOfClicks < 1) {
       this.stopGame()
@@ -108,6 +125,7 @@ export default class Home extends Component {
                   doorNumber={doorNr}
                   doorClicked={this.doorClicked}
                   open={this.state.openDoor === doorNr ? true : undefined}
+                  clicksLeft={this.state.clicksLeft[doorNr - 1]}
                 />
               ))
             }

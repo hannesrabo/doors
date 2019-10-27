@@ -1,31 +1,39 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 
-
-const Door = function (props) {
-  let classNames = "door"
-  let doorImage = "static/door.png"
-  let doorClicked = () => { }
-
-  if (props.open) {
-    classNames += " door-open"
-    doorImage = "static/door-open.png"
-  } else {
-    classNames += " door-closed"
+export default class Door extends Component {
+  constructor(props) {
+    super(props)
   }
 
-  if (props.doorClicked)
-    doorClicked = props.doorClicked
+  doorClicked = (doorNumber) => {
+    if (this.props.doorClicked)
+      this.props.doorClicked(doorNumber)
 
-  return (
-    <div>
-      <a onClick={() => { doorClicked(props.doorNumber) }}>
-        <div className={classNames}>
-          <img src={doorImage}></img>
-          <span className="plus-button">+</span>
-        </div>
-      </a>
-      <style jsx>{`
+  }
+
+  render = () => {
+    let classNames = "door"
+    let doorImage = "static/door.png"
+
+    if (this.props.open) {
+      classNames += " door-open"
+      doorImage = "static/door-open.png"
+    } else {
+      classNames += " door-closed"
+    }
+
+
+    return (
+      <div>
+        <a onClick={() => { this.doorClicked(this.props.doorNumber) }}>
+          <div className={classNames}>
+            <img src={doorImage}></img>
+            <span className="plus-button">+</span>
+            <span className="counter">{this.props.clicksLeft}</span>
+          </div>
+        </a>
+        <style jsx>{`
           .door {
             position: relative;
           }
@@ -56,9 +64,27 @@ const Door = function (props) {
           .door.door-closed .plus-button {
             display: none;
           }
-        `}</style>
-    </div>
-  )
-}
 
-export default Door
+          .door .counter {
+            position: absolute;
+            left: 40px;
+            top: 40px;
+            font-size: 40px;
+            background-color: red;
+            color: white;
+            border-radius: 30px;
+            padding: 0px 12px;
+          }
+
+          .door.door-open .counter {
+            display: none;
+          }
+
+
+        `}</style>
+      </div>
+    )
+
+  }
+
+}
