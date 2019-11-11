@@ -14,7 +14,9 @@ const Home = () => (
     <div className='hero'>
       <h1 className='title'>Welcome to the Door Game!</h1>
       <p className='description'>
-        To get started, press the button below. Good luck!
+        In this game you collect points by opening doors and pressing the button behind them.
+        You only have 100 clicks so it is important that you find the door that generates the most points.
+        By pressing the button below you consent to data being collected about how you play. The data will be used in a study.
       </p>
 
       <div className='row'>

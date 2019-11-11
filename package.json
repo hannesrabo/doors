@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "9.0.7",
+    "randgen": "^0.1.0",
     "react": "16.10.2",
     "react-dom": "16.10.2"
   }

@@ -6,6 +6,7 @@ import Door from '../components/door'
 import sendToSheets from '../util/gform'
 
 import BACKEND_URL from '../env-config'
+import pointsUtils from '../util/point'
 
 export default class Home extends Component {
 
@@ -20,14 +21,21 @@ export default class Home extends Component {
     // on values in it.
     this.state = {
       openDoor: -1,
-      numberOfClicks: 10,
+      numberOfClicks: 50,
       points: 0,
+      newPoints: '',
     }
 
     // Everything starting with this (which refers to the component) is available
     // everywhere within it.
     this.doors = [
       1, 2, 3
+    ]
+
+    this.pointsFunctions = [
+      () => (pointsUtils.pointsNormal(3, 0.5)),
+      () => (pointsUtils.pointsChi(4)),
+      () => (pointsUtils.pointsNormal(3, 2.5)),
     ]
 
     this.doorsClickedNumberOfTimes = this.doors.map(() => 0)
@@ -37,12 +45,23 @@ export default class Home extends Component {
 
   }
 
+  componentDidMount = () => {
+    if (!this.userID) {
+      sessionStorage.setItem('userid', pointsUtils.UUID());
+      this.userID = sessionStorage.getItem('userid')
+      console.log("Userid: " + this.userID)
+    }
+  }
+
   // This is a normal function which can be called for example when you click on a door.
   doorClicked = (doorNumber) => {
     if (doorNumber) {
+      var newPointsStr = ''
       var points = this.state.points
       if (this.state.openDoor == doorNumber) {
-        points += 1
+        var p = this.pointsFunctions[doorNumber - 1]()
+        newPointsStr = '+ ' + p.toFixed(2)
+        points += p
       } else {
         this.numberOfDoorsOpened += 1
       }
@@ -56,6 +75,7 @@ export default class Home extends Component {
         openDoor: doorNumber,
         numberOfClicks: this.state.numberOfClicks - 1,
         points: points,
+        newPoints: newPointsStr,
       })
     }
   }
@@ -65,6 +85,8 @@ export default class Home extends Component {
       this.gameRunning = false
       console.log("Game ended")
       sendToSheets({
+        level: 1,
+        user_id: this.userID,
         door_openings: this.numberOfDoorsOpened,
         clicked_1: this.doorsClickedNumberOfTimes[0],
         clicked_2: this.doorsClickedNumberOfTimes[1],
@@ -96,7 +118,7 @@ export default class Home extends Component {
             To get started, press the button below. Good luck!
           </p>
 
-          <p>{this.state.numberOfClicks}</p>
+          <p className='pointsSection'>Clicks left: {this.state.numberOfClicks}</p>
 
           <div className='row'>
             {
@@ -114,7 +136,8 @@ export default class Home extends Component {
           </div>
 
           <div>
-            <p>Points: {this.state.points}</p>
+            <p className="pointsSection">Points: {this.state.points.toFixed(2)}</p>
+            <p className="newPoints">{this.state.newPoints}</p>
           </div>
         </div>
 
@@ -123,6 +146,17 @@ export default class Home extends Component {
           document {
             font-family: "-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu', 'Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif"
           }
+
+          .pointsSection {
+            font-size: 30px;
+            text-align: center;
+          }
+
+          .newPoints {
+            text-align: center;
+            font-size: 25px;
+          }
+
           .hero {
             width: 100%;
             color: #333;
@@ -168,7 +202,7 @@ export default class Home extends Component {
             color: #333;
           }
         `}</style>
-      </div>
+      </div >
     )
   }
 }
