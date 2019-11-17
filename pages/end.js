@@ -1,24 +1,44 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
 import BACKEND_URL from '../env-config'
 
-const Home = (points) => (
-    <div>
+export default class End extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      game_1: 0.0,
+      game_2: 0.0,
+    }
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      game_1: Number(sessionStorage.getItem("game_1")).toFixed(2),
+      game_2: Number(sessionStorage.getItem("game_2")).toFixed(2),
+    })
+  }
+
+  render() {
+    return (
+      <div>
         <Head>
-            <title>Home</title>
-            <link rel='icon' href='/static/favicon.ico' importance='low' />
+          <title>Home</title>
+          <link rel='icon' href='/static/favicon.ico' importance='low' />
         </Head>
         <div className='hero'>
-            <h1 className='title'>Spelet är slut!</h1>
-            <p className='description'>
-                Tack för att du har deltagit!
+          <h1 className='title'>Spelet är slut!</h1>
+          <p className='description'>
+            Tack för att du har deltagit!
             </p>
         </div>
-        <div> {/*Lägg in att man kan se hur många poäng man fick på respektive nivå! */}
-{/* <p className="pointsSection">Totalt antal poäng nivå 2: {points.toFixed(0)}</p> */}
-          </div>
+        <div className="row">
+          <p className="pointsSection">Totalt antal poäng nivå 1: {this.state.game_1}</p>
+          <p className="pointsSection">Totalt antal poäng nivå 2: {this.state.game_2}</p>
+        </div>
         <style global jsx>{`
       document {
         font-family: "-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu', 'Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif"
@@ -71,7 +91,7 @@ const Home = (points) => (
         color: #333;
       }
     `}</style>
-    </div>
-)
-
-export default Home
+      </div>
+    )
+  }
+}

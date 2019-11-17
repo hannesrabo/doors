@@ -49,7 +49,7 @@ export default class Home extends Component {
 
   // This is a normal function which can be called for example when you click on a door.
   doorClicked = doorNumber => {
-    if (doorNumber && this.state.clicksLeft[doorNumber - 1] > 0) {
+    if (doorNumber && this.state.clicksLeft[doorNumber - 1] > 0 && this.gameRunning) {
       var newPointsStr = "";
       var points = this.state.points;
       if (this.state.openDoor == doorNumber) {
@@ -66,11 +66,8 @@ export default class Home extends Component {
           else return count - 1;
         else return 8;
       });
-      console.log(newClicksLeft);
-      this.doorsClickedNumberOfTimes[doorNumber - 1] += 1;
 
-      console.log("numberOfDoorsOpened: " + this.numberOfDoorsOpened);
-      console.log("doorsClicked: " + this.doorsClickedNumberOfTimes);
+      this.doorsClickedNumberOfTimes[doorNumber - 1] += 1;
 
       this.setState({
         openDoor: doorNumber,
@@ -85,7 +82,9 @@ export default class Home extends Component {
   stopGame = () => {
     if (this.gameRunning) {
       this.gameRunning = false;
-      console.log("Game ended");
+
+      sessionStorage.setItem("game_2", this.state.points);
+
       sendToSheets({
         level: 2,
         user_id: this.userID,
@@ -133,16 +132,16 @@ export default class Home extends Component {
           </p>
           <div className="row">
             {// Map goes though a list and returns one value for each element in the list
-            // Here we use it to create a lot of doors using the properties in the list.
-            this.doors.map(doorNr => (
-              <Door
-                key={doorNr}
-                doorNumber={doorNr}
-                doorClicked={this.doorClicked}
-                open={this.state.openDoor === doorNr ? true : undefined}
-                clicksLeft={this.state.clicksLeft[doorNr - 1]}
-              />
-            ))}
+              // Here we use it to create a lot of doors using the properties in the list.
+              this.doors.map(doorNr => (
+                <Door
+                  key={doorNr}
+                  doorNumber={doorNr}
+                  doorClicked={this.doorClicked}
+                  open={this.state.openDoor === doorNr ? true : undefined}
+                  clicksLeft={this.state.clicksLeft[doorNr - 1]}
+                />
+              ))}
           </div>
 
           <div>

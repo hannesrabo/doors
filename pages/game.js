@@ -54,7 +54,7 @@ export default class Home extends Component {
 
   // This is a normal function which can be called for example when you click on a door.
   doorClicked = doorNumber => {
-    if (doorNumber) {
+    if (doorNumber && this.gameRunning) {
       var newPointsStr = "";
       var points = this.state.points;
       if (this.state.openDoor == doorNumber) {
@@ -83,6 +83,9 @@ export default class Home extends Component {
     if (this.gameRunning) {
       this.gameRunning = false;
       console.log("Game ended");
+
+      sessionStorage.setItem("game_1", this.state.points);
+
       sendToSheets({
         level: 1,
         user_id: this.userID,
@@ -128,15 +131,15 @@ export default class Home extends Component {
 
           <div className="row">
             {// Map goes though a list and returns one value for each element in the list
-            // Here we use it to create a lot of doors using the properties in the list.
-            this.doors.map(doorNr => (
-              <Door
-                key={doorNr}
-                doorNumber={doorNr}
-                doorClicked={this.doorClicked}
-                open={this.state.openDoor === doorNr ? true : undefined}
-              />
-            ))}
+              // Here we use it to create a lot of doors using the properties in the list.
+              this.doors.map(doorNr => (
+                <Door
+                  key={doorNr}
+                  doorNumber={doorNr}
+                  doorClicked={this.doorClicked}
+                  open={this.state.openDoor === doorNr ? true : undefined}
+                />
+              ))}
           </div>
 
           <div>

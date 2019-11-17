@@ -1,6 +1,6 @@
 
 const MAIN_URL = 'https://script.google.com/macros/s/AKfycbxfxJuz6s8PHwfnlm4uE2E02Z7D1qNyrzWKRDNoihF8r0bGouE/exec'
-const USER_DATA_URL = 'https://script.google.com/macros/s/AKfycbwcQg9JM1CUdufxSWGm1VhRI1oEoa6TUB1z9HRjPtY0eoUIn3E5/exec'
+const USER_DATA_URL = 'https://script.google.com/macros/s/AKfycbyI36SfNZ7bYNgXzOsA67s0y3zypnQwCeJZvR9QG6PTwJWPFAGm/exec'
 
 const sendToSheets = (dataObject, URL = MAIN_URL) => {
     // ?test_1=1&test_2=2&test_3=1
