@@ -4,20 +4,21 @@ import Link from 'next/link'
 
 import BACKEND_URL from '../env-config'
 
-const Home = () => (
+const Home = (points) => (
     <div>
         <Head>
             <title>Home</title>
             <link rel='icon' href='/static/favicon.ico' importance='low' />
         </Head>
-
         <div className='hero'>
-            <h1 className='title'>You're done!</h1>
+            <h1 className='title'>Spelet är slut!</h1>
             <p className='description'>
-                Thank you for participating!
+                Tack för att du har deltagit!
             </p>
         </div>
-
+        <div> {/*Lägg in att man kan se hur många poäng man fick på respektive nivå! */}
+{/* <p className="pointsSection">Totalt antal poäng nivå 2: {points.toFixed(0)}</p> */}
+          </div>
         <style global jsx>{`
       document {
         font-family: "-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu', 'Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif"

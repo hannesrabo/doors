@@ -7,20 +7,20 @@ import BACKEND_URL from '../env-config'
 const NextLevel = () => (
     <div>
         <Head>
-            <title>Next Level</title>
+            <title>Next level</title>
             <link rel='icon' href='/static/favicon.ico' importance='low' />
         </Head>
 
         <div className='hero'>
-            <h1 className='title'>Level 1 finished! Prepare for level 2</h1>
+            <h1 className='title'>Nivå 1 avklarad!</h1>
             <p className='description'>
-                To get to the next level, press the button below:
+                Klicka på knappen nedan för att komma till nivå 2:
             </p>
 
             <div className='row'>
                 <Link href={'/game2'} as={BACKEND_URL + '/game2'}>
                     <a className='card'>
-                        <h3>Start Level 2</h3>
+                        <h3>Starta nivå 2</h3>
                     </a>
                 </Link>
             </div>

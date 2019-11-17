@@ -1,21 +1,20 @@
-import React, { Component } from 'react'
-import Head from 'next/head'
-import Router from 'next/router'
-import Door from '../components/door'
+import React, { Component } from "react";
+import Head from "next/head";
+import Router from "next/router";
+import Door from "../components/door";
 
-import sendToSheets from '../util/gform'
+import sendToSheets from "../util/gform";
 
-import BACKEND_URL from '../env-config'
-import pointsUtils from '../util/point'
+import BACKEND_URL from "../env-config";
+import pointsUtils from "../util/point";
 
 export default class Home extends Component {
-
-  // The constructor sets up the state that is needed for the page 
+  // The constructor sets up the state that is needed for the page
   // before we try to utilize it.
   constructor(props) {
-    super(props)
+    super(props);
 
-    // this.state is a special type of variable that is used for things that are 
+    // this.state is a special type of variable that is used for things that are
     // supposed to update the page. As soon as anything changes in this.state,
     // the entire component is redrawn which means that new things might appear based
     // on values in it.
@@ -23,67 +22,67 @@ export default class Home extends Component {
       openDoor: -1,
       numberOfClicks: 50,
       points: 0,
-      newPoints: '',
-    }
+      newPoints: ""
+    };
 
     // Everything starting with this (which refers to the component) is available
     // everywhere within it.
-    this.doors = [
-      1, 2, 3
-    ]
+    this.doors = [1, 2, 3];
 
     this.pointsFunctions = [
-      () => (pointsUtils.pointsNormal(3, 0.5)),
-      () => (pointsUtils.pointsChi(4)),
-      () => (pointsUtils.pointsNormal(3, 2.5)),
-    ]
+      () => pointsUtils.pointsNormal(3, 0.5),
+      () => pointsUtils.pointsChi(4),
+      () => pointsUtils.pointsNormal(3, 2.5)
+    ];
 
-    this.doorsClickedNumberOfTimes = this.doors.map(() => 0)
+    this.doorsClickedNumberOfTimes = this.doors.map(() => 0);
 
-    this.numberOfDoorsOpened = 0
-    this.gameRunning = true
-
+    this.numberOfDoorsOpened = 0;
+    this.gameRunning = true;
   }
 
   componentDidMount = () => {
     if (!this.userID) {
-      sessionStorage.setItem('userid', pointsUtils.UUID());
-      this.userID = sessionStorage.getItem('userid')
-      console.log("Userid: " + this.userID)
+      this.userID = sessionStorage.getItem("userid");
+      if (!this.userID) {
+        sessionStorage.setItem("userid", pointsUtils.UUID());
+        this.userID = sessionStorage.getItem("userid");
+        console.log("Userid: " + this.userID);
+      }
     }
-  }
+  };
 
   // This is a normal function which can be called for example when you click on a door.
-  doorClicked = (doorNumber) => {
+  doorClicked = doorNumber => {
     if (doorNumber) {
-      var newPointsStr = ''
-      var points = this.state.points
+      var newPointsStr = "";
+      var points = this.state.points;
       if (this.state.openDoor == doorNumber) {
-        var p = this.pointsFunctions[doorNumber - 1]()
-        newPointsStr = '+ ' + p.toFixed(2)
-        points += p
+        var p = this.pointsFunctions[doorNumber - 1]();
+        newPointsStr = "+ " + p.toFixed(2);
+        points += p;
       } else {
-        this.numberOfDoorsOpened += 1
+        this.numberOfDoorsOpened += 1;
       }
 
-      this.doorsClickedNumberOfTimes[doorNumber - 1] += 1
+      this.doorsClickedNumberOfTimes[doorNumber - 1] += 1;
 
-      console.log("numberOfDoorsOpened: " + this.numberOfDoorsOpened)
-      console.log("doorsClicked: " + this.doorsClickedNumberOfTimes)
+      console.log("numberOfDoorsOpened: " + this.numberOfDoorsOpened);
+      console.log("doorsClicked: " + this.doorsClickedNumberOfTimes);
 
       this.setState({
         openDoor: doorNumber,
         numberOfClicks: this.state.numberOfClicks - 1,
         points: points,
-        newPoints: newPointsStr,
-      })
+        newPoints: newPointsStr
+      });
     }
-  }
+  };
 
   stopGame = () => {
     if (this.gameRunning) {
-      this.gameRunning = false
-      console.log("Game ended")
+      this.gameRunning = false;
+      console.log("Game ended");
       sendToSheets({
         level: 1,
         user_id: this.userID,
@@ -91,17 +90,16 @@ export default class Home extends Component {
         clicked_1: this.doorsClickedNumberOfTimes[0],
         clicked_2: this.doorsClickedNumberOfTimes[1],
         clicked_3: this.doorsClickedNumberOfTimes[2],
-        points: this.state.points,
-      })
-      Router.push(BACKEND_URL + '/nextlevel')
+        points: this.state.points
+      });
+      Router.push(BACKEND_URL + "/nextlevel");
     }
-  }
+  };
 
   // This is the primary method of the component. It returns the page which is then displayed
   render() {
-
     if (this.state.numberOfClicks < 1) {
-      this.stopGame()
+      this.stopGame();
     }
 
     return (
@@ -109,34 +107,42 @@ export default class Home extends Component {
         {/* In the head you have mostly meta data about the site */}
         <Head>
           <title>Game</title>
-          <link rel='icon' href='/static/favicon.ico' importance='low' />
+          <link rel="icon" href="/static/favicon.ico" importance="low" />
         </Head>
 
-        <div className='hero'>
-          <h1 className='title'>Welcome to the Door Game!</h1>
-          <p className='description'>
-            To get started, press the button below. Good luck!
+        <div className="hero">
+          <h1 className="title">Nivå 1</h1>
+          <p className="description">
+            Klicka en gång på en av dörrarna för att öppna dörren.
+          </p>
+          <p className="description">
+            Klicka på den blå knappen för att få poäng.
+          </p>
+          <p className="description">
+            De olika dörrarna ger slumpmässigt antal poäng men den genomsnittliga poängen för varje dörr är olika.
           </p>
 
-          <p className='pointsSection'>Clicks left: {this.state.numberOfClicks}</p>
+          <p className="pointsSection">
+            Clicks left: {this.state.numberOfClicks}
+          </p>
 
-          <div className='row'>
-            {
-              // Map goes though a list and returns one value for each element in the list
-              // Here we use it to create a lot of doors using the properties in the list.
-              this.doors.map(doorNr => (
-                <Door
-                  key={doorNr}
-                  doorNumber={doorNr}
-                  doorClicked={this.doorClicked}
-                  open={this.state.openDoor === doorNr ? true : undefined}
-                />
-              ))
-            }
+          <div className="row">
+            {// Map goes though a list and returns one value for each element in the list
+            // Here we use it to create a lot of doors using the properties in the list.
+            this.doors.map(doorNr => (
+              <Door
+                key={doorNr}
+                doorNumber={doorNr}
+                doorClicked={this.doorClicked}
+                open={this.state.openDoor === doorNr ? true : undefined}
+              />
+            ))}
           </div>
 
           <div>
-            <p className="pointsSection">Points: {this.state.points.toFixed(2)}</p>
+            <p className="pointsSection">
+              Points: {this.state.points.toFixed(2)}
+            </p>
             <p className="newPoints">{this.state.newPoints}</p>
           </div>
         </div>
@@ -144,7 +150,7 @@ export default class Home extends Component {
         {/* This is styling for the document and can be ignored for the most part */}
         <style jsx>{`
           document {
-            font-family: "-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu', 'Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif"
+            font-family: "-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu', 'Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif";
           }
 
           .pointsSection {
@@ -202,7 +208,7 @@ export default class Home extends Component {
             color: #333;
           }
         `}</style>
-      </div >
-    )
+      </div>
+    );
   }
 }

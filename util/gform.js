@@ -1,7 +1,8 @@
 
-const URL = 'https://script.google.com/macros/s/AKfycbxfxJuz6s8PHwfnlm4uE2E02Z7D1qNyrzWKRDNoihF8r0bGouE/exec'
+const MAIN_URL = 'https://script.google.com/macros/s/AKfycbxfxJuz6s8PHwfnlm4uE2E02Z7D1qNyrzWKRDNoihF8r0bGouE/exec'
+const USER_DATA_URL = 'https://script.google.com/macros/s/AKfycbwcQg9JM1CUdufxSWGm1VhRI1oEoa6TUB1z9HRjPtY0eoUIn3E5/exec'
 
-const sendToSheets = (dataObject) => {
+const sendToSheets = (dataObject, URL = MAIN_URL) => {
     // ?test_1=1&test_2=2&test_3=1
     let dataString = ''
     for (let key in dataObject) {
@@ -24,6 +25,8 @@ const sendToSheets = (dataObject) => {
 
     let dataURL = URL + '?' + dataString
 
+    console.log(URL)
+
     return fetch(
         dataURL,
         {
@@ -40,4 +43,7 @@ const sendToSheets = (dataObject) => {
 }
 
 export default sendToSheets
+export {
+    USER_DATA_URL
+}
 
