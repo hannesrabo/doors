@@ -128,7 +128,7 @@ export default class Home extends Component {
           </p>
 
           <p className="pointsSection">
-            Clicks left: {this.state.numberOfClicks}
+            Antal återstående klick: {this.state.numberOfClicks}
           </p>
           <div className="row">
             {// Map goes though a list and returns one value for each element in the list
@@ -146,7 +146,7 @@ export default class Home extends Component {
 
           <div>
             <p className="pointsSection">
-              Points: {this.state.points.toFixed(2)}
+              Poäng: {this.state.points.toFixed(2)}
             </p>
             <p className="newPoints">{this.state.newPoints}</p>
           </div>
