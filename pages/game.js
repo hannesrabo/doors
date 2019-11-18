@@ -20,7 +20,7 @@ export default class Home extends Component {
     // on values in it.
     this.state = {
       openDoor: -1,
-      numberOfClicks: 50,
+      numberOfClicks: 100,
       points: 0,
       newPoints: ""
     };
@@ -29,10 +29,11 @@ export default class Home extends Component {
     // everywhere within it.
     this.doors = [1, 2, 3];
 
+    /*Här ändrar man poängfördelningen för de olika dörrarna. Överst är längst till vänster osv.*/
     this.pointsFunctions = [
       () => pointsUtils.pointsNormal(3, 0.5),
       () => pointsUtils.pointsChi(4),
-      () => pointsUtils.pointsNormal(3, 2.5)
+      () => pointsUtils.pointsNormal(2.9, 2.5)
     ];
 
     this.doorsClickedNumberOfTimes = this.doors.map(() => 0);

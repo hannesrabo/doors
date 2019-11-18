@@ -20,9 +20,9 @@ export default class Home extends Component {
     // on values in it.
     this.state = {
       openDoor: -1,
-      numberOfClicks: 50,
+      numberOfClicks: 100,
       points: 0,
-      clicksLeft: [7, 7, 7],
+      clicksLeft: [15, 15, 15],
       newPoints: ""
     };
 
@@ -31,7 +31,7 @@ export default class Home extends Component {
     this.doors = [1, 2, 3];
 
     this.pointsFunctions = [
-      () => pointsUtils.pointsNormal(3, 2.5),
+      () => pointsUtils.pointsNormal(2.9, 2.5),
       () => pointsUtils.pointsNormal(3, 0.5),
       () => pointsUtils.pointsChi(4)
     ];
@@ -64,7 +64,7 @@ export default class Home extends Component {
         if (index != doorNumber - 1)
           if (count <= 0) return 0;
           else return count - 1;
-        else return 8;
+        else return 16;
       });
 
       this.doorsClickedNumberOfTimes[doorNumber - 1] += 1;
