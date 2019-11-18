@@ -120,7 +120,7 @@ export default class Home extends Component {
             Klicka en gång på en av dörrarna för att öppna dörren.
           </p>
           <p className="description">
-            Klicka på den blå knappen för att få poäng.
+            Klicka på den blå knappen för att få poäng. Du kan klicka flera gånger i rad på knappen om du vill få poäng från samma dörr igen.
           </p>
           <p className="description">
             De olika dörrarna ger slumpmässigt antal poäng men den genomsnittliga poängen för varje dörr är olika.
