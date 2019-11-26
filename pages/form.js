@@ -33,7 +33,7 @@ export default class Home extends Component {
 		age: this.ageInput.value
 	}, USER_DATA_URL)
 	
-	Router.push(BACKEND_URL + "/game")
+	Router.push(BACKEND_URL + "/testgame")
   };
 
   render() {

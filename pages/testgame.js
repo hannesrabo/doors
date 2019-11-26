@@ -110,12 +110,12 @@ export default class Home extends Component {
       <div>
         {/* In the head you have mostly meta data about the site */}
         <Head>
-          <title>Game</title>
+          <title>Test</title>
           <link rel="icon" href="/static/favicon.ico" importance="low" />
         </Head>
 
         <div className="hero">
-          <h1 className="title">Nivå 1</h1>
+          <h1 className="title">Övningsnivå</h1>
           <p className="description">
             Klicka en gång på en av dörrarna för att öppna dörren.
           </p>

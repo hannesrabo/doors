@@ -18,7 +18,7 @@ const NextLevel = () => (
             </p>
 
             <div className='row'>
-                <Link href={'/game2'} as={BACKEND_URL + '/game'}>
+                <Link href={'/game'} as={BACKEND_URL + '/game'}>
                     <a className='card'>
                         <h3>Starta nivå 1</h3>
                     </a>

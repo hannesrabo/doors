@@ -10,6 +10,7 @@ export default class End extends Component {
     super(props)
 
     this.state = {
+      testgame: 0.0,
       game_1: 0.0,
       game_2: 0.0,
     }
@@ -17,6 +18,7 @@ export default class End extends Component {
 
   componentDidMount = () => {
     this.setState({
+      testgame: Number(sessionStorage.getItem("testgame")).toFixed(2),
       game_1: Number(sessionStorage.getItem("game_1")).toFixed(2),
       game_2: Number(sessionStorage.getItem("game_2")).toFixed(2),
     })
@@ -36,6 +38,7 @@ export default class End extends Component {
             </p>
         </div>
         <div className="row">
+        <p className="pointsSection">Totalt antal poäng på övningsnivån: {this.state.testgame}</p>
           <p className="pointsSection">Totalt antal poäng nivå 1: {this.state.game_1}</p>
           <p className="pointsSection">Totalt antal poäng nivå 2: {this.state.game_2}</p>
         </div>
