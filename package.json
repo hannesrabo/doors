@@ -9,7 +9,7 @@
     "export": "rm -rf .next out && next build && next export -o out && touch out/.nojekyll"
   },
   "dependencies": {
-    "next": "9.0.7",
+    "next": "9.3.2",
     "randgen": "^0.1.0",
     "react": "16.10.2",
     "react-dom": "16.10.2"
